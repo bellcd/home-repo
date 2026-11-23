@@ -5,15 +5,7 @@
 #   scripts/install.sh               link into the current profile, and remember it
 #   scripts/install.sh --remembered  relink every remembered profile
 #
-# Run it once per profile, e.g. once as is and once with CLAUDE_CONFIG_DIR set.
-# It also installs git hooks that run --remembered after every pull, so from
-# then on `git pull` is the whole update: new skills get linked, and links to
-# removed ones are deleted.
-#
-# Each skill is its own link and the skills folder stays a real folder, so
-# whatever else lives there (claude.ai's synced/, local skills) is untouched
-# and stays per profile. An existing link is replaced; a real file or folder
-# in the way is reported and left alone. Safe to rerun.
+# See the README's Setup section.
 set -euo pipefail
 shopt -s nullglob
 
