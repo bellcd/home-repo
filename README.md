@@ -1,14 +1,41 @@
-# Skills
+# Home repo
 
-[Agent Skills](https://agentskills.io) — portable instructions for AI coding agents.
+The global layer for everything I work on: instructions and [Agent Skills](https://agentskills.io) that apply in every repo, unless a repo's own instructions or skills override them. It holds no business or project details, so it stays public.
 
-This repo is a Claude Code plugin marketplace.
-Installing the plugin is how to get all of these skills at once, in every project, on every machine.
+- `global/CLAUDE.md`: instructions for every repo.
+- `skills/`: every skill, flat. Most are mine; the rest are copied from upstream (see Vendored skills).
+
+## Setup, once per machine
+
+```bash
+scripts/install.sh
+```
+
+It makes two symlinks (link -> what it points at):
+
+```text
+$CLAUDE_CONFIG_DIR/CLAUDE.md -> global/CLAUDE.md      (default ~/.claude)
+$CLAUDE_CONFIG_DIR/skills    -> skills/
+```
+
+Claude Code reads through them into this repo, so `git pull` is the whole update, new skills included. The script never overwrites a real file or folder; move one aside and rerun. Another agent is one more row in the script's `agents` table.
+
+## Vendored skills
+
+`vendor.lock.json` pins each upstream source to a commit and lists the skills copied from it into `skills/`. Their licences are in `licenses/`.
+
+```bash
+scripts/vendor.sh --outdated   # which vendored skills upstream has changed since the pin
+scripts/vendor.sh              # after editing the lock: recopy at the pinned commit
+scripts/vendor.sh --check      # CI: fail if a copy differs from its pinned commit
+```
+
+Only changes to the lock need `vendor.sh`; editing my own skills never does. Removing a skill from the lock leaves its folder; delete it in the same change.
 
 ## Installing the plugin
 
 ```bash
-claude plugin marketplace add bellcd/skills
+claude plugin marketplace add bellcd/home-repo
 claude plugin install bellcd-skills@bellcd
 ```
 
@@ -27,8 +54,8 @@ The [skills CLI](https://github.com/vercel-labs/skills) installs a single skill 
 which is worth it when only that skill is wanted:
 
 ```bash
-npx skills add bellcd/skills --skill code-style
-npx skills add bellcd/skills --list
+npx skills add bellcd/home-repo --skill code-style
+npx skills add bellcd/home-repo --list
 ```
 
 Add `-g` for a global install.
