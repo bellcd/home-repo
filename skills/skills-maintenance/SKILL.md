@@ -7,7 +7,7 @@ description: Use when changing a skill, or after merging a change to the skills 
 
 ## Edit upstream, never a copy
 
-`bellcd/skills` is the source. Every copy on disk is downstream of it, and editing one in place either loses the edit at the next refresh or diverges invisibly.
+`bellcd/home-repo` is the source. Every copy on disk is downstream of it, and editing one in place either loses the edit at the next refresh or diverges invisibly.
 
 Branch the upstream checkout at `~/skills`, change `skills/<name>/`, open a pull request, and let the user merge it. Only then refresh any copy.
 
@@ -54,7 +54,7 @@ npx skills update <name> -g
 A **new** skill is not installed yet, so `update` has nothing to update. Install it instead:
 
 ```bash
-npx skills add bellcd/skills --skill <name> -g
+npx skills add bellcd/home-repo --skill <name> -g
 ```
 
 Both commands exit successfully, which is what makes this worth knowing. Reading `update`'s "nothing to update" as "already current" leaves the skill uninstalled while looking like a clean refresh. `ls ~/.agents/skills/` is the check that it landed.

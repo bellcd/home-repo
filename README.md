@@ -1,14 +1,39 @@
-# Skills
+# Home repo
 
-[Agent Skills](https://agentskills.io) — portable instructions for AI coding agents.
+The global layer for everything I work on: instructions and [Agent Skills](https://agentskills.io) that apply in every repo, unless a repo's own instructions or skills override them. It holds no business or project details, so it stays public.
 
-This repo is a Claude Code plugin marketplace.
-Installing the plugin is how to get all of these skills at once, in every project, on every machine.
+- `global/`: instructions for every repo. `CLAUDE.md` always loads; it points to the other files, which load only when needed.
+- `skills/`: every skill, flat. Most are mine; the rest are copied from upstream (see Vendored skills).
+
+## Setup, once per profile
+
+```bash
+scripts/install.sh                                   # ~/.claude
+CLAUDE_CONFIG_DIR=~/.claude-personal scripts/install.sh   # any other profile
+```
+
+It links each file in `global/` into `<profile>/`, and each skill to `<profile>/skills/<name>` (link -> this repo). Claude Code reads through the links into this repo. It also installs git hooks that relink every installed profile after a pull, so `git pull` is the whole update: new skills appear, removed ones go.
+
+The skills folder itself stays a real folder, so claude.ai's `synced/` skills and any local skills stay per profile and out of this repo. The script never overwrites a real file or folder; move one aside and rerun. Another agent is one more row in the script's `agents` table.
+
+The links point at whatever this clone has checked out, so a skill edited on a branch is live while that branch is checked out.
+
+## Vendored skills
+
+`vendor.lock.json` pins each upstream source to a commit and lists the skills copied from it into `skills/`. Their licences are in `licenses/`.
+
+```bash
+scripts/vendor.sh --outdated   # which vendored skills upstream has changed since the pin
+scripts/vendor.sh              # after editing the lock: recopy at the pinned commit
+scripts/vendor.sh --check      # CI: fail if a copy differs from its pinned commit
+```
+
+Only changes to the lock need `vendor.sh`; editing my own skills never does. Removing a skill from the lock leaves its folder; delete it in the same change.
 
 ## Installing the plugin
 
 ```bash
-claude plugin marketplace add bellcd/skills
+claude plugin marketplace add bellcd/home-repo
 claude plugin install bellcd-skills@bellcd
 ```
 
@@ -27,8 +52,8 @@ The [skills CLI](https://github.com/vercel-labs/skills) installs a single skill 
 which is worth it when only that skill is wanted:
 
 ```bash
-npx skills add bellcd/skills --skill code-style
-npx skills add bellcd/skills --list
+npx skills add bellcd/home-repo --skill code-style
+npx skills add bellcd/home-repo --list
 ```
 
 Add `-g` for a global install.
