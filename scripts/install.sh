@@ -32,13 +32,18 @@ link() {
 }
 
 install_into() {
-  local name=$1 dir=$2 row n instructions skills
+  local name=$1 dir=$2 row n instructions skills file base
   for row in "${agents[@]}"; do
     read -r n _ _ instructions skills <<<"$row"
     [[ $n == "$name" ]] && break
   done
   mkdir -p "$dir/$skills"
-  link "$root/global/CLAUDE.md" "$dir/$instructions"
+  # CLAUDE.md under the agent's instructions name; the files it points to as is.
+  for file in "$root"/global/*; do
+    base=$(basename "$file")
+    [[ $base == CLAUDE.md ]] && base=$instructions
+    link "$file" "$dir/$base"
+  done
   for skill in "$root"/skills/*/; do
     link "${skill%/}" "$dir/$skills/$(basename "$skill")"
   done

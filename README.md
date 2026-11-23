@@ -2,7 +2,7 @@
 
 The global layer for everything I work on: instructions and [Agent Skills](https://agentskills.io) that apply in every repo, unless a repo's own instructions or skills override them. It holds no business or project details, so it stays public.
 
-- `global/`: instructions for every repo. `CLAUDE.md` is the entry point and imports the rest.
+- `global/`: instructions for every repo. `CLAUDE.md` always loads; it points to the other files, which load only when needed.
 - `skills/`: every skill, flat. Most are mine; the rest are copied from upstream (see Vendored skills).
 
 ## Setup, once per profile
@@ -12,7 +12,7 @@ scripts/install.sh                                   # ~/.claude
 CLAUDE_CONFIG_DIR=~/.claude-personal scripts/install.sh   # any other profile
 ```
 
-It links `global/CLAUDE.md` to `<profile>/CLAUDE.md`, and each skill to `<profile>/skills/<name>` (link -> this repo). Claude Code reads through the links into this repo. It also installs git hooks that relink every installed profile after a pull, so `git pull` is the whole update: new skills appear, removed ones go.
+It links each file in `global/` into `<profile>/`, and each skill to `<profile>/skills/<name>` (link -> this repo). Claude Code reads through the links into this repo. It also installs git hooks that relink every installed profile after a pull, so `git pull` is the whole update: new skills appear, removed ones go.
 
 The skills folder itself stays a real folder, so claude.ai's `synced/` skills and any local skills stay per profile and out of this repo. The script never overwrites a real file or folder; move one aside and rerun. Another agent is one more row in the script's `agents` table.
 

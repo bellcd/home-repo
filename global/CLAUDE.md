@@ -12,4 +12,4 @@ Give every time to the dev in Eastern, labelled ET. Convert UTC from logs and AP
 
 ## Memory
 
-@memory.md
+Before writing, promoting or deleting a memory, read `memory.md` in the same folder as this file.
