@@ -5,20 +5,18 @@ The global layer for everything I work on: instructions and [Agent Skills](https
 - `global/CLAUDE.md`: instructions for every repo.
 - `skills/`: every skill, flat. Most are mine; the rest are copied from upstream (see Vendored skills).
 
-## Setup, once per machine
+## Setup, once per profile
 
 ```bash
-scripts/install.sh
+scripts/install.sh                                   # ~/.claude
+CLAUDE_CONFIG_DIR=~/.claude-personal scripts/install.sh   # any other profile
 ```
 
-It makes two symlinks (link -> what it points at):
+It links `global/CLAUDE.md` to `<profile>/CLAUDE.md`, and each skill to `<profile>/skills/<name>` (link -> this repo). Claude Code reads through the links into this repo. It also installs git hooks that relink every installed profile after a pull, so `git pull` is the whole update: new skills appear, removed ones go.
 
-```text
-$CLAUDE_CONFIG_DIR/CLAUDE.md -> global/CLAUDE.md      (default ~/.claude)
-$CLAUDE_CONFIG_DIR/skills    -> skills/
-```
+The skills folder itself stays a real folder, so claude.ai's `synced/` skills and any local skills stay per profile and out of this repo. The script never overwrites a real file or folder; move one aside and rerun. Another agent is one more row in the script's `agents` table.
 
-Claude Code reads through them into this repo, so `git pull` is the whole update, new skills included. The script never overwrites a real file or folder; move one aside and rerun. Another agent is one more row in the script's `agents` table.
+The links point at whatever this clone has checked out, so a skill edited on a branch is live while that branch is checked out.
 
 ## Vendored skills
 
