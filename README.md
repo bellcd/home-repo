@@ -2,7 +2,7 @@
 
 The global layer for everything I work on: instructions and [Agent Skills](https://agentskills.io) that apply in every repo, unless a repo's own instructions or skills override them. It holds no business or project details, so it stays public.
 
-- `global/CLAUDE.md`: instructions for every repo.
+- `global/`: instructions for every repo. `CLAUDE.md` is the entry point and imports the rest.
 - `skills/`: every skill, flat. Most are mine; the rest are copied from upstream (see Vendored skills).
 
 ## Setup, once per profile
