@@ -16,6 +16,8 @@ It links each file in `global/` into `<profile>/`, and each skill to `<profile>/
 
 The skills folder itself stays a real folder, so claude.ai's `synced/` skills and any local skills stay per profile and out of this repo. The script never overwrites a real file or folder; move one aside and rerun. Another agent is one more row in the script's `agents` table.
 
+`--no-skills` links only `global/`, and removes any skill links this repo made. Use it for a profile that already gets these skills another way, such as an organization's managed settings enabling the `bellcd-skills` and `mattpocock-skills` plugins; linking them as well would load every skill twice. The profile remembers the choice, so pulls keep it.
+
 The links point at whatever this clone has checked out, so a skill edited on a branch is live while that branch is checked out.
 
 ## Vendored skills
