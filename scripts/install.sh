@@ -3,6 +3,7 @@
 # folders, so they apply in every repo.
 #
 #   scripts/install.sh               link into the current profile, and remember it
+#   scripts/install.sh --no-skills   the same, minus the skills (and unlink any)
 #   scripts/install.sh --remembered  relink every remembered profile
 #
 # See the README's Setup section.
@@ -32,7 +33,7 @@ link() {
 }
 
 install_into() {
-  local name=$1 dir=$2 row n instructions skills file base
+  local name=$1 dir=$2 with=$3 row n instructions skills file base
   for row in "${agents[@]}"; do
     read -r n _ _ instructions skills <<<"$row"
     [[ $n == "$name" ]] && break
@@ -44,12 +45,14 @@ install_into() {
     [[ $base == CLAUDE.md ]] && base=$instructions
     link "$file" "$dir/$base"
   done
-  for skill in "$root"/skills/*/; do
-    link "${skill%/}" "$dir/$skills/$(basename "$skill")"
-  done
-  # Links into this repo's skills/ whose skill is gone.
+  if [[ $with == skills ]]; then
+    for skill in "$root"/skills/*/; do
+      link "${skill%/}" "$dir/$skills/$(basename "$skill")"
+    done
+  fi
+  # Links into this repo's skills/ whose skill is gone, or all of them without skills.
   for at in "$dir/$skills"/*; do
-    if [[ -L $at && $(readlink "$at") == "$root/skills/"* && ! -e $at ]]; then
+    if [[ -L $at && $(readlink "$at") == "$root/skills/"* && ($with != skills || ! -e $at) ]]; then
       rm "$at"
       echo "removed $at"
     fi
@@ -58,13 +61,17 @@ install_into() {
 
 if [[ ${1:-} == --remembered ]]; then
   [[ -f $remembered ]] || exit 0
-  while read -r name dir; do install_into "$name" "$dir"; done <"$remembered"
+  while read -r name dir with; do install_into "$name" "$dir" "${with:-skills}"; done <"$remembered"
 else
+  with=skills
+  [[ ${1:-} == --no-skills ]] && with=no-skills
   for row in "${agents[@]}"; do
     read -r name var default _ _ <<<"$row"
     dir=${!var:-$default}
-    install_into "$name" "$dir"
-    grep -qxF "$name $dir" "$remembered" 2>/dev/null || echo "$name $dir" >>"$remembered"
+    install_into "$name" "$dir" "$with"
+    # One line per profile; a rerun replaces its line.
+    { [[ -f $remembered ]] && awk -v n="$name" -v d="$dir" '!($1 == n && $2 == d)' "$remembered"; echo "$name $dir $with"; } >"$remembered.new"
+    mv "$remembered.new" "$remembered"
   done
   hooks=$(git -C "$root" rev-parse --path-format=absolute --git-path hooks)
   mkdir -p "$hooks"
