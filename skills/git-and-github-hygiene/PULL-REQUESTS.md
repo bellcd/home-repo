@@ -42,13 +42,12 @@ Jira matches the key case-insensitively in the branch name, the title, or a comm
 
 ## Bodies stay short
 
-A few sentences on what the slice does, then the reference:
+A few sentences on what the slice does, then the ticket reference, worded for the tracker:
 
-```
-Refs [PT-nnn](https://parlancetherapy.atlassian.net/browse/PT-nnn)
-```
+- **Jira:** `Refs [PT-nnn](https://parlancetherapy.atlassian.net/browse/PT-nnn)`, written out in full, because GitHub does not linkify a Jira key. That host is the Parlance tracker.
+- **Linear:** `Closes VS-nnn`. Only a closing word moves the ticket to Done when the pull request merges; Linear reads `Refs` as a link that leaves the ticket where it is.
 
-Written out in full, because GitHub does not linkify a Jira key. That host is the Parlance tracker. Nothing more belongs in the body.
+Nothing more belongs in the body.
 
 No detail-by-detail recap of the change, and explicitly no list of what a code-review pass altered.
 The diff and the commits are the record. Bodies that carry more detail than that go unread.
