@@ -45,7 +45,7 @@ Jira matches the key case-insensitively in the branch name, the title, or a comm
 A few sentences on what the slice does, then the ticket reference, worded for the tracker:
 
 - **Jira:** `Refs [PT-nnn](https://parlancetherapy.atlassian.net/browse/PT-nnn)`, written out in full, because GitHub does not linkify a Jira key. That host is the Parlance tracker.
-- **Linear:** `Closes VS-nnn`. Only a closing word moves the ticket to Done when the pull request merges; Linear reads `Refs` as a link that leaves the ticket where it is.
+- **Linear:** `Closes VS-nnn`. Only a closing word applies the on-merge status; a `Refs` link still moves the ticket on open and review, but leaves it there when the pull request merges.
 
 Nothing more belongs in the body.
 
