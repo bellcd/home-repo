@@ -9,7 +9,7 @@ description: Use when changing a skill, or after merging a change to the skills 
 
 `bellcd/home-repo` is the source. Every copy on disk is downstream of it, and editing one in place either loses the edit at the next refresh or diverges invisibly.
 
-Branch the upstream checkout at `~/skills`, change `skills/<name>/`, open a pull request, and let the user merge it. Only then refresh any copy.
+Branch the upstream checkout at `~/home-repo`, change `skills/<name>/`, open a pull request, and let the user merge it. Only then refresh any copy.
 
 ## Every change is a release
 
@@ -66,13 +66,13 @@ Both commands exit successfully, which is what makes this worth knowing. Reading
 Check whether a copy is actually stale rather than refreshing on faith. For the plugin, read the installed version from `claude plugin list` and diff against its cache directory:
 
 ```bash
-diff -rq ~/skills/skills/<name> ~/.claude/plugins/cache/bellcd/bellcd-skills/<version>/skills/<name>
+diff -rq ~/home-repo/skills/<name> ~/.claude/plugins/cache/bellcd/bellcd-skills/<version>/skills/<name>
 ```
 
 For a single-skill install:
 
 ```bash
-diff -rq ~/skills/skills/<name> ~/.agents/skills/<name>
+diff -rq ~/home-repo/skills/<name> ~/.agents/skills/<name>
 ```
 
 Silence means in sync. A refresh that reports success on an unchanged copy looks identical to one that did real work.
