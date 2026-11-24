@@ -16,6 +16,7 @@ Prefer fixing violations in their own commits. I.e. "make the change easy, then 
 - Use 0-based indices everywhere and convert to 1-based only at the display site. Name such values `xIndex`. This does not cover ordinal domain scales that merely rank values, which keep their natural numbering.
 - Spell names out rather than abbreviating them to opaque acronyms. An acronym is fine when it is itself the canonical public API.
 - Give a consumer a narrow interface covering only what it actually uses, rather than a broad shared one with the unused methods stubbed as no-ops.
+- Store a value made of several parts as an object or array, never as a joined string, e.g. `{ "tool": "claude-code", "field": "total_cost_usd" }`, not `"claude-code total_cost_usd"`. This applies to data written for later reading too, such as JSON records and logs. A joined string has to be parsed back apart, and breaks when a part contains the separator.
 - Fix a malformed value at its source rather than adding tolerance code downstream. When a script chokes on a config or env value the user owns, correct the value. Reserve normalization for input genuinely outside their control, such as third-party payloads.
 
 ## Comments
